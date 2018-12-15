@@ -1,7 +1,5 @@
-# AndroidHrwInfo -- || Documentation under development
-AndroidHrwInfo is a utility library that helps developers to know the internal hardware features of an Android device
-
 # AndroidHrwInfo
+[![](https://jitpack.io/v/cyclonesword/android-hrwinfo.svg)](https://jitpack.io/#cyclonesword/android-hrwinfo)
 
 AndroidHrwInfo is a utility library that helps developers to know the internal hardware features of an Android device.
 It is divided in 5 major categories :
