@@ -37,6 +37,8 @@ public interface CPU {
         void temperatureChanged(double newTemp);
     }
 
+
+
     interface Core {
         int getMinFrequency();
         int getMaxFrequency();
