@@ -10,7 +10,7 @@ It is divided in 5 major categories :
   - Device
   - SystemInfo
 
-# First public pre-release: 0.8.1.BETA
+# First public pre-release: 0.8.1-BETA
 
 ## Installation instructions
 
