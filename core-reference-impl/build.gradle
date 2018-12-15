@@ -48,10 +48,11 @@ dependencies {
 
     // Espresso dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    
     implementation project(':core-api')
+    testImplementation project(':core-reference-impl')
 
-    implementation 'com.javando.collections:core-api:1.0.1.RC'
-    implementation 'com.javando.collections:core-reference-impl:1.0.1.RC'
+    implementation 'com.github.cyclonesword:observable-collections:1.0.RC'
 
 }
 

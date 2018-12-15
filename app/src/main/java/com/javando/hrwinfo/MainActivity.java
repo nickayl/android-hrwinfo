@@ -7,6 +7,7 @@ import org.javando.android.hrwinfo.core.api.AndroidHrwInfo;
 import org.javando.android.hrwinfo.core.api.CPU;
 import org.javando.android.hrwinfo.core.api.Device;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Debug";

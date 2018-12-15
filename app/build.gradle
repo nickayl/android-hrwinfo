@@ -48,14 +48,13 @@ dependencies {
     // Espresso dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
-    implementation 'com.javando.collections:core-api:1.0.1.RC'
-    implementation 'com.javando.collections:core-reference-impl:1.0.1.RC'
+//    implementation 'com.javando.collections:core-api:1.0.1.RC'
+//    implementation 'com.javando.collections:core-reference-impl:1.0.1.RC'
+    implementation 'com.github.cyclonesword:observable-collections:1.0.RC'
 
-    implementation project(':core-api')
-    // https://mvnrepository.com/artifact/javax.xml.stream/javax.xml.stream
-    // https://mvnrepository.com/artifact/javax.xml.stream/stax-api
-//    compile group: 'javax.xml.stream', name: 'stax-api', version: '1.0-2'
+    // Template : implementation 'com.github.User:Repo:Tag'
 
 
     androidTestImplementation project(path: ':core-reference-impl')
+    compile project(path: ':core-api')
 }
