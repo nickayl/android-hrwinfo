@@ -1,6 +1,5 @@
 package com.javando.hrwinfo;
 
-import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +22,7 @@ public class Main2Activity extends AppCompatActivity {
 //        void handleError(HTTPCode httpCode, String errorDescription);
 //    }
 
-    @SuppressLint("DefaultLocale")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: === called ===");
