@@ -48,7 +48,7 @@ Then, add the dependency to your pom.xml :
 <dependency>
     <groupId>com.github.cyclonesword</groupId>
     <artifactId>android-hrwinfo</artifactId>
-    <version>0.8.1.BETA</version>
+    <version>0.8.1-BETA</version>
 </dependency>
 ```
 
