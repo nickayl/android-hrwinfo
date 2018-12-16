@@ -14,7 +14,7 @@ It is divided in 5 major categories :
 
 #### Gradle
 First you have to add the jitpack repository to your global build.gradle file:
-```
+``` groovy
 allprojects {
         repositories {
             maven { url 'https://jitpack.io' }
@@ -24,13 +24,13 @@ allprojects {
 
 
 Then, add the dependency to your project-local build.gradle :
-```
+``` groovy
 implementation 'com.github.cyclonesword:android-hrwinfo:0.8.1-BETA'
 ```
 
 #### Maven
 Add the jitpack repository to your pom.xml: 
-```
+``` xml
 <repositories>
     <repository>
         <id>jitpack.io</id>
@@ -42,7 +42,7 @@ If you have a multi-module project, make sure you add it in your parent pom (the
 <br />
 
 Then, add the dependency to your pom.xml :
-```
+``` xml
 <dependency>
     <groupId>com.github.cyclonesword</groupId>
     <artifactId>android-hrwinfo</artifactId>
@@ -54,7 +54,7 @@ Then, add the dependency to your pom.xml :
 
 #### CPU Frequency
 You can listen to CPU frequency change simply by attaching a listener and invoking the relative start method:
-```
+``` java
 StringBuilder sb = new StringBuilder();
 AndroidHrwInfo
         .getInstance() // Get the singleton instance
