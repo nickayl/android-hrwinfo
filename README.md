@@ -1,6 +1,7 @@
 # AndroidHrwInfo
 [![](https://jitpack.io/v/cyclonesword/android-hrwinfo.svg)](https://jitpack.io/#cyclonesword/android-hrwinfo)
 
+
 AndroidHrwInfo is a utility library that helps developers to know the internal hardware features of an Android device.
 It is divided in 5 major categories :
 
@@ -9,6 +10,12 @@ It is divided in 5 major categories :
   - Battery
   - Device
   - SystemInfo
+
+If you want an high-level view of the features of this library, you can download the app that is built upon this library:
+
+<a href="https://play.google.com/store/apps/details?id=com.domenicoaiello.devicespecs">
+    <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="drawing" width="150"/>
+</a>
 
 ## Installation instructions
 
