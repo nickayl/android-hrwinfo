@@ -1,6 +1,7 @@
 # AndroidHrwInfo
 [![](https://jitpack.io/v/cyclonesword/android-hrwinfo.svg)](https://jitpack.io/#cyclonesword/android-hrwinfo)
 
+
 AndroidHrwInfo is a utility library that helps developers to know the internal hardware features of an Android device.
 It is divided in 5 major categories :
 
@@ -9,6 +10,12 @@ It is divided in 5 major categories :
   - Battery
   - Device
   - SystemInfo
+
+If you want an high-level view of the features of this library, you can download the app that is built upon this library:
+
+<a href="https://play.google.com/store/apps/details?id=com.domenicoaiello.devicespecs">
+    <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="drawing" width="150"/>
+</a>
 
 ## Installation instructions
 
@@ -57,16 +64,16 @@ You can listen to CPU frequency change simply by attaching a listener and invoki
 ``` java
 StringBuilder sb = new StringBuilder();
 AndroidHrwInfo
-        .getInstance() // Get the singleton instance
-        .cpu()  // Get the CPU object
-        .setOnFrequencyChangeListener(cores -> { // Add your listener
-            sb.replace(0,sb.length(), "[");
-            for(CPU.Core core: cores) {
-               sb.append(String.format("#%d %d ",core.getCoreNumber(), core.getCurFrequency()));
-            }
-            sb.append("] Mhz\n");
+    .getInstance() // Get the singleton instance
+    .cpu()  // Get the CPU object
+    .setOnFrequencyChangeListener(cores -> { // Add your listener
+        sb.replace(0,sb.length(), "[");
+        for(CPU.Core core: cores) {
+           sb.append(String.format("#%d %d ",core.getCoreNumber(), core.getCurFrequency()));
+        }
+        sb.append("] Mhz\n");
 
-            Log.d(TAG, sb.toString());
-        })
-        .startCpuFrequencyMonitor(1000); // Don't forget to start the monitor!
+        Log.d(TAG, sb.toString());
+    })
+.startCpuFrequencyMonitor(1000); // Don't forget to start the monitor!
 ```

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.d(TAG, sb.toString());
                 })
-                .startCpuFrequencyMonitor(1000);
+        .startCpuFrequencyMonitor(1000);
 
     }
 }
