@@ -57,16 +57,16 @@ You can listen to CPU frequency change simply by attaching a listener and invoki
 ``` java
 StringBuilder sb = new StringBuilder();
 AndroidHrwInfo
-        .getInstance() // Get the singleton instance
-        .cpu()  // Get the CPU object
-        .setOnFrequencyChangeListener(cores -> { // Add your listener
-            sb.replace(0,sb.length(), "[");
-            for(CPU.Core core: cores) {
-               sb.append(String.format("#%d %d ",core.getCoreNumber(), core.getCurFrequency()));
-            }
-            sb.append("] Mhz\n");
+    .getInstance() // Get the singleton instance
+    .cpu()  // Get the CPU object
+    .setOnFrequencyChangeListener(cores -> { // Add your listener
+        sb.replace(0,sb.length(), "[");
+        for(CPU.Core core: cores) {
+           sb.append(String.format("#%d %d ",core.getCoreNumber(), core.getCurFrequency()));
+        }
+        sb.append("] Mhz\n");
 
-            Log.d(TAG, sb.toString());
-        })
-        .startCpuFrequencyMonitor(1000); // Don't forget to start the monitor!
+        Log.d(TAG, sb.toString());
+    })
+.startCpuFrequencyMonitor(1000); // Don't forget to start the monitor!
 ```
