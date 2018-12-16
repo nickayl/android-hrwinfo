@@ -10,8 +10,6 @@ It is divided in 5 major categories :
   - Device
   - SystemInfo
 
-# First public pre-release: 0.8.1-BETA
-
 ## Installation instructions
 
 #### Gradle
@@ -52,6 +50,23 @@ Then, add the dependency to your pom.xml :
 </dependency>
 ```
 
-
-
 ##Usage
+
+#### CPU Frequency
+You can listen to CPU frequency change simply by attaching a listener and invoking the relative start method:
+```
+StringBuilder sb = new StringBuilder();
+AndroidHrwInfo
+        .getInstance() // Get the singleton instance
+        .cpu()  // Get the CPU object
+        .setOnFrequencyChangeListener(cores -> { // Add your listener
+            sb.replace(0,sb.length(), "[");
+            for(CPU.Core core: cores) {
+               sb.append(String.format("#%d %d ",core.getCoreNumber(), core.getCurFrequency()));
+            }
+            sb.append("] Mhz\n");
+
+            Log.d(TAG, sb.toString());
+        })
+        .startCpuFrequencyMonitor(1000); // Don't forget to start the monitor!
+```

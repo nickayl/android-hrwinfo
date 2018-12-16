@@ -19,18 +19,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: "+device.toString());
 
 
+        StringBuilder sb = new StringBuilder();
+
         AndroidHrwInfo.getInstance()
                 .cpu()
                 .setOnFrequencyChangeListener(cores -> {
-                    String str = "[";
+                    sb.replace(0,sb.length(), "[");
                     for(CPU.Core core: cores) {
-                        str += String.format("#%d %d ",core.getCoreNumber(), core.getCurFrequency());
+                       sb.append(String.format("#%d %d ",core.getCoreNumber(), core.getCurFrequency()));
                     }
-                    str += "] Mhz\n";
-                    Log.d(TAG, str);
+                    sb.append("] Mhz\n");
+
+                    Log.d(TAG, sb.toString());
                 })
                 .startCpuFrequencyMonitor(1000);
 
-        Log.d(TAG, "onCreate: ciaooooo");
     }
 }
