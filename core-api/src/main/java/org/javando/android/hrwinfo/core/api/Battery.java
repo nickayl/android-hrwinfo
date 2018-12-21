@@ -10,4 +10,10 @@ public interface Battery {
     String getTemperature();
     String getVoltage();
     String getCapacity();
+
+    void setOnChangeEventListener(OnChangeEventListener listener);
+
+    interface OnChangeEventListener {
+        void onChange(Battery battery);
+    }
 }
