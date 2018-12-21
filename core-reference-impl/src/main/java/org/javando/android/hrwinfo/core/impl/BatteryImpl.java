@@ -27,6 +27,8 @@ public class BatteryImpl extends BroadcastReceiver implements Battery {
     private String temperature;
     private String voltage;
     private String capacity;
+    private OnChangeEventListener listener;
+
 
 //    String[] codes = new String[] { "health", "charge_percentage", "plugged_state", "charging_status", "technology", "temperature", "voltage", "capacity" };
 //    String[] titles = new String[] { "Health", "Remaining Charge", "Plugged State", "Charging Status", "Technology", "Temperature", "Voltage", "Capacity" };
@@ -208,6 +210,9 @@ public class BatteryImpl extends BroadcastReceiver implements Battery {
 ////                }
 //            }
 
+            if(listener != null)
+                listener.onChange(this);
+
         } else {
             Toast.makeText(activity, "No BatteryImpl present", Toast.LENGTH_SHORT).show();
         }
@@ -301,5 +306,10 @@ public class BatteryImpl extends BroadcastReceiver implements Battery {
 
     public String getCapacity() {
         return capacity;
+    }
+
+    @Override
+    public void setOnChangeEventListener(OnChangeEventListener listener) {
+        this.listener = listener;
     }
 }

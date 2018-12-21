@@ -55,6 +55,6 @@ dependencies {
     // Template : implementation 'com.github.User:Repo:Tag'
 
 
-    androidTestImplementation project(path: ':core-reference-impl')
-    compile project(path: ':core-api')
+    implementation project(path: ':core-reference-impl')
+    implementation project(path: ':core-api')
 }
