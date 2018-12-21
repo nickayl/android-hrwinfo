@@ -32,7 +32,7 @@ allprojects {
 
 Then, add the dependency to your project-local build.gradle :
 ``` groovy
-implementation 'com.github.cyclonesword:android-hrwinfo:0.8.1-BETA'
+implementation 'com.github.cyclonesword:android-hrwinfo:0.8.2-BETA'
 ```
 
 #### Maven
@@ -53,7 +53,7 @@ Then, add the dependency to your pom.xml :
 <dependency>
     <groupId>com.github.cyclonesword</groupId>
     <artifactId>android-hrwinfo</artifactId>
-    <version>0.8.1-BETA</version>
+    <version>0.8.2-BETA</version>
 </dependency>
 ```
 
@@ -77,3 +77,57 @@ AndroidHrwInfo
     })
 .startCpuFrequencyMonitor(1000); // Don't forget to start the monitor!
 ```
+
+#### Battery Status
+You can get the battery status informations and listen to changes:
+
+``` java
+Battery battery = AndroidHrwInfo
+                .getInstance()
+                .battery(activity);
+
+String capacity = battery.getCapacity();
+String chargingStatus = battery.getChargingStatus();
+String health = battery.getHealth();
+String percentage = battery.getPercentage();
+String temperature = battery.getTemperature();
+String voltage = battery.getVoltage();
+String pluggedState = battery.getPlugged();
+String technology = battery.getTechnology();
+
+battery.setOnChangeEventListener(b -> {
+    // Invoked on every battery status change
+  
+    // It gives a formatted value, for example : 38°
+    String temp = b.getTemperature();
+    
+    // If you want a numeric value:
+    double tempDouble = Double.parseDouble(b.getTemperature().replace("°C", "").trim());
+});
+```
+
+#### System information
+The SystemInfo interface contains useful information on the android system the device is running:
+
+``` java
+SystemInfo systemInfo = AndroidHrwInfo
+                .getInstance()
+                .systemInfo(this);
+
+systemInfo.getAndroidVersion();
+systemInfo.getApiLevel();
+systemInfo.getOpenGL();
+systemInfo.getBootLoader();
+systemInfo.getJavaVM();
+systemInfo.getRootAccess();
+systemInfo.getSecurityPatchLevel();
+systemInfo.getKernelArchitecture();
+systemInfo.getBuildId();
+systemInfo.getKernelVersion();
+
+// Returns how long the device is running
+systemInfo.setSystemUptimeMonitor((days, hours, minutes, seconds) -> {
+    System.out.format("The device is running from %d days, %d hours, %d minutes and %d seconds",days,hours,minutes,seconds);
+});
+```
+
