@@ -342,7 +342,7 @@ public class CPUImpl implements CPU {
 
         while (true) {
             File f = new File("/sys/devices/system/cpu/cpu" + numCores++);
-            if (!f.exists() || numCores > 24) // if something goes wrong, stop it at the 24th iteration
+            if (!f.exists() || numCores > 24) // if something goes wrong, stop it at the 24th iteration (after all, what type of mobile cpu has more than 24 cores? )
                 break;
         }
         return --numCores;
