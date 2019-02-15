@@ -59,7 +59,7 @@ Then, add the dependency to your pom.xml :
 
 ## Usage
 
-#### CPU Frequency
+### CPU Frequency
 **Note that the CPU listener does not work on the emulator. Only for real devices.**
 
 You can listen to CPU frequency change simply by attaching a listener and invoking the relative start method:
