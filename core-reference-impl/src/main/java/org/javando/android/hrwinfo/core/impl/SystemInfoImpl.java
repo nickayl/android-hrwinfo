@@ -1,9 +1,12 @@
 package org.javando.android.hrwinfo.core.impl;
 
 import android.app.Activity;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
+
 import org.javando.android.hrwinfo.core.api.GPU;
 import org.javando.android.hrwinfo.core.api.SystemInfo;
 
@@ -11,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,9 +44,10 @@ public class SystemInfoImpl implements SystemInfo {
     private boolean systemUptimeMonitorActive = false;
 
     private GPU gpu;
+    private int numProcess = 0;
 
     public SystemInfoImpl(Activity activity) {
-        if(activity == null)
+        if (activity == null)
             throw new IllegalArgumentException("Activity cannot be null");
 
         this.activity = activity;
@@ -54,22 +59,22 @@ public class SystemInfoImpl implements SystemInfo {
     private void initialize() {
 
         androidVersion = Build.VERSION.RELEASE;
-      //  apiLevel = String.valueOf(Build.VERSION.SDK_INT);
+        //  apiLevel = String.valueOf(Build.VERSION.SDK_INT);
         apiLevel = Build.VERSION.SDK;
         securityPatchLevel = retriveSecurityPatchLevel();
         bootLoader = Build.BOOTLOADER;
         buildId = Build.ID;
-        javaVM = System.getProperty("java.vm.name") + " " +System.getProperty("java.vm.version");
-        openGL = gpu.getOpenGLVersion().replace("OpenGL ES","");
+        javaVM = System.getProperty("java.vm.name") + " " + System.getProperty("java.vm.version");
+        openGL = gpu.getOpenGLVersion().replace("OpenGL ES", "");
         kernelArchitecture = System.getProperty("os.arch");
-        kernelVersion = System.getProperty("os.name")+ " "+ System.getProperty("os.version");
+        kernelVersion = System.getProperty("os.name") + " " + System.getProperty("os.version");
 
         String rootCheck = activity.getString(R.string.no);
         try {
             String root = Utils.readSystemFile("cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq");
             Integer.valueOf(root);
             rootCheck = activity.getString(R.string.yes);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -91,9 +96,9 @@ public class SystemInfoImpl implements SystemInfo {
 
             while ((line = br.readLine()) != null) {
                 str += line + "\n";
-                if(str.contains("security_patch")) {
+                if (str.contains("security_patch")) {
                     String[] splitted = line.split(":");
-                    if(splitted.length == 2) {
+                    if (splitted.length == 2) {
                         return splitted[1];
                     }
                     break;
@@ -151,6 +156,27 @@ public class SystemInfoImpl implements SystemInfo {
     }
 
     @Override
+    public int getProcessRunning() {
+        if (numProcess == 0) {
+
+            PackageManager pm = activity.getPackageManager();
+            List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+            for (ApplicationInfo appInfo : apps) {
+                numProcess += ((appInfo.flags & ApplicationInfo.FLAG_STOPPED) != 0) ? 0 : 1;
+                System.out.println(pm.getApplicationLabel(appInfo));
+            }
+        }
+
+        return numProcess;
+    }
+
+    @Override
+    public int getNumThreads() {
+        return Thread.getAllStackTraces().keySet().size();
+    }
+
+    @Override
     public void setSystemUptimeMonitor(SystemUptimeMonitor monitor) {
         enableSystemUptimeMonitor(monitor);
     }
@@ -179,7 +205,7 @@ public class SystemInfoImpl implements SystemInfo {
 
         String formattedUptime = String.format("%s:%s:%s", hoursString, minutesString, secondsString);
 
-        if(!daysString.equals("0"))
+        if (!daysString.equals("0"))
             formattedUptime = daysString + " daysString " + formattedUptime;
 
         return formattedUptime;
@@ -193,7 +219,7 @@ public class SystemInfoImpl implements SystemInfo {
 
         executorService.submit(() -> {
             try {
-                while(systemUptimeMonitorActive) {
+                while (systemUptimeMonitorActive) {
                     long millis = SystemClock.elapsedRealtime();
 
                     double currentSeconds = millis / 1000f;
@@ -205,10 +231,10 @@ public class SystemInfoImpl implements SystemInfo {
                     this.monitor.onChange((int) divideByDays, (int) divideByHours, (int) divideByMinutes, (int) divideBySeconds);
                     Thread.sleep(1000);
                 }
-            } catch(InterruptedException e) {
-                Log.e(TAG, "enableSystemUptimeMonitor: interrupted exception!" );
+            } catch (InterruptedException e) {
+                Log.e(TAG, "enableSystemUptimeMonitor: interrupted exception!");
                 e.printStackTrace();
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.d(TAG, "enableSystemUptimeMonitor: unknown error");
                 e.printStackTrace();
             }

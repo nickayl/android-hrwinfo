@@ -22,6 +22,10 @@ public interface SystemInfo {
 
      String getSecurityPatchLevel();
 
+     int getProcessRunning();
+
+     int getNumThreads();
+
      void setSystemUptimeMonitor(SystemUptimeMonitor monitor);
      void removeSystemUptimeMonitor();
 

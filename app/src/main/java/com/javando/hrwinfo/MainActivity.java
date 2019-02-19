@@ -1,14 +1,13 @@
 package com.javando.hrwinfo;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import org.javando.android.hrwinfo.core.api.AndroidHrwInfo;
 import org.javando.android.hrwinfo.core.api.CPU;
 import org.javando.android.hrwinfo.core.api.Device;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private static final String TAG = "Debug";
 

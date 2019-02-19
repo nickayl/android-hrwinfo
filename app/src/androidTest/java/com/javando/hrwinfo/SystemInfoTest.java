@@ -1,11 +1,10 @@
 package com.javando.hrwinfo;
 
 import android.util.Log;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.MediumTest;
-import androidx.test.rule.ActivityTestRule;
+
 import org.javando.android.hrwinfo.core.api.AndroidHrwInfo;
 import org.javando.android.hrwinfo.core.api.SystemInfo;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,25 +13,46 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
+
+
 @RunWith(AndroidJUnit4.class)
-@MediumTest
 public class SystemInfoTest {
 
     private static final String TAG = "Sysinfo tag";
+    private static SystemInfo sysInfo;
+
     @Rule
-    public ActivityTestRule<MainActivity> activityRule
-            = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
+
+    @Before
+    public void beforeClass() {
+        sysInfo = AndroidHrwInfo.getInstance().systemInfo(activityRule.getActivity());
+    }
+
+    @Test
+    public void numProcessesTest() {
+        int num = sysInfo.getProcessRunning();
+        assertNotEquals(0, num);
+        assertThat(num, is(greaterThan(1)));
+        Log.d(TAG, "Num processes: " + num);
+    }
 
     @Test
     public void testSystemInfo() {
-        SystemInfo sysInfo = AndroidHrwInfo.getInstance().systemInfo(activityRule.getActivity());
-        Log.d(TAG, "testSystemInfo: "+sysInfo);
+        Log.d(TAG, "testSystemInfo: " + sysInfo);
 
         ExecutorService exSer = Executors.newFixedThreadPool(1);
 
         exSer.submit(() -> {
             sysInfo.setSystemUptimeMonitor((days, hours, minutes, seconds) -> {
-                Log.d(TAG, "testSystemInfo: "+sysInfo.formatSystemUptime(days, hours, minutes, seconds));
+                Log.d(TAG, "testSystemInfo: " + sysInfo.formatSystemUptime(days, hours, minutes, seconds));
             });
 
         });
@@ -44,6 +64,12 @@ public class SystemInfoTest {
         }
 
         Log.d(TAG, "testSystemInfo: timeout!");
+    }
+
+    @Test
+    public void getNumThreadsTest() {
+        int num = sysInfo.getNumThreads();
+        System.out.println(num);
     }
 
 }
