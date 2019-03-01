@@ -2,7 +2,6 @@ package org.javando.android.hrwinfo.core.impl;
 
 import android.opengl.*;
 import android.util.Log;
-import com.javando.collections.api.ObservableUnit;
 import org.javando.android.hrwinfo.core.api.GPU;
 import org.javando.android.hrwinfo.core.api.NotImplementedException;
 
@@ -96,11 +95,6 @@ public class GPUImpl implements GPU {
     @Override
     public String getModel() {
         throw new NotImplementedException("getModel() method of GPU interface has not been implemented yet.");
-    }
-
-    @Override
-    public ObservableUnit<Double> getFrequency() {
-        throw new NotImplementedException("getFrequency() method of GPU interface has not been implemented yet.");
     }
 
 }

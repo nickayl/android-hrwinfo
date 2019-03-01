@@ -27,6 +27,7 @@ public class BatteryImpl extends BroadcastReceiver implements Battery {
     private String temperature;
     private String voltage;
     private String capacity;
+
     private OnChangeEventListener listener;
 
 
@@ -40,15 +41,6 @@ public class BatteryImpl extends BroadcastReceiver implements Battery {
             throw new IllegalArgumentException("Activity cannot be null on BatteryImpl class.");
 
         this.activity = activity;
-
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-
-
-
-        this.activity.registerReceiver(this, intentFilter);
     }
 
     @Override
@@ -311,5 +303,19 @@ public class BatteryImpl extends BroadcastReceiver implements Battery {
     @Override
     public void setOnChangeEventListener(OnChangeEventListener listener) {
         this.listener = listener;
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+
+        this.activity.registerReceiver(this, intentFilter);
+        listener.onChange(this);
+    }
+
+    @Override
+    public void removeOnChangeEventListener() {
+        this.activity.unregisterReceiver(this);
+        this.listener = null;
     }
 }

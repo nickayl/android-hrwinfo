@@ -1,7 +1,5 @@
 package com.javando.hrwinfo;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 import org.javando.android.hrwinfo.core.api.AndroidHrwInfo;
 import org.javando.android.hrwinfo.core.api.Battery;
 import org.junit.Before;
@@ -10,6 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 @RunWith(AndroidJUnit4.class)
 public class BatteryTest {
@@ -40,7 +41,7 @@ public class BatteryTest {
 
 
         try {
-            Thread.sleep(20000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,18 +1,55 @@
 package org.javando.android.hrwinfo.core.impl;
 
+import android.os.Build;
 import android.util.Log;
-import com.javando.collections.api.ObservableCollections;
-import com.javando.collections.api.ObservableUnit;
+
 import org.javando.android.hrwinfo.core.api.CPU;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.javando.android.hrwinfo.core.api.CPU.Constants.*;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARCH_X86_64;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARM8_64;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARMV_6_M;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARMV_7_A_32_BIT;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARMV_7_A_32_BIT_WITH_NEON_VFP;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARMV_7_A_WITH_NEON_AND_TRUST_ZONE;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARMV_7_M;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARMV_8_2_A;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARMV_8_M;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ARM_VENDOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_15_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_32_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_35_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_53_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_55_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_57_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_5_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_72_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_73_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_75_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_76_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_7_MPCORE;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_8_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_A_9_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_M_0_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_M_1_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_M_23_PROOCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_M_33_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_M_3_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_M_4_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.CORTEX_M_7_PROCESSOR;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.ERROR_TAG;
+import static org.javando.android.hrwinfo.core.api.CPU.Constants.INTEL_VENDOR;
 
 
 public class CPUImpl implements CPU {
@@ -40,6 +77,12 @@ public class CPUImpl implements CPU {
     private TemperatureChangeListener tempChangeListener;
     private int defaultPrecision = 500;
     private String catCommand;
+
+    private int minFrequency = Integer.MAX_VALUE;
+    private int maxFrequency = Integer.MIN_VALUE;
+
+    private float averageMaxFreq = 0;
+    private float averageMinFreq = 0;
 
     static CPU getInstance() {
         if (instance == null)
@@ -86,6 +129,56 @@ public class CPUImpl implements CPU {
     @Override
     public List<Core> getCores() {
         return Collections.unmodifiableList(cores);
+    }
+
+    @Override
+    public int getMinFrequency() {
+        if (minFrequency != Integer.MAX_VALUE)
+            return minFrequency;
+
+        for (Core c : cores) {
+            if (c.getMinFrequency() == 0)
+                continue;
+            minFrequency = Math.min(c.getMinFrequency(), minFrequency);
+        }
+
+        return minFrequency;
+    }
+
+    @Override
+    public int getMaxFrequency() {
+        if (maxFrequency != Integer.MIN_VALUE)
+            return maxFrequency;
+
+        for (Core c : cores) {
+            maxFrequency = Math.max(c.getMaxFrequency(), maxFrequency);
+        }
+
+        return maxFrequency;
+    }
+
+    @Override
+    public float getAverageMinimumFrequency() {
+        if (averageMinFreq == 0) {
+            for (Core c : cores) {
+                averageMinFreq += c.getMinFrequency();
+            }
+            averageMinFreq /= numCores;
+        }
+
+        return averageMinFreq;
+    }
+
+    @Override
+    public float getAverageMaximumFrequency() {
+        if (averageMaxFreq == 0) {
+            for (Core c : cores) {
+                averageMaxFreq += c.getMaxFrequency();
+            }
+            averageMaxFreq /= numCores;
+        }
+
+        return averageMaxFreq;
     }
 
     @Override
@@ -199,7 +292,6 @@ public class CPUImpl implements CPU {
 
     }
 
-
     // ======== private dirty methods =========== //
 
     private void initialize() {
@@ -229,18 +321,25 @@ public class CPUImpl implements CPU {
     private List<Cluster> calculateClusters() {
         this.clusters = new ArrayList<>();
 
-        for (int i = 0, c = 0; i < getNumCores() - 1; i++) {
-            CoreImpl nextCore = cores.get(i + 1);
-            CoreImpl curCore = cores.get(i);
-            c++;
+        int num = 0, prevMin = 0, prevMax = 0;
 
-            if (curCore.getMinFrequency() < nextCore.getMinFrequency() ||
-                    curCore.getMaxFrequency() < nextCore.getMaxFrequency() ||
-                    i == getNumCores() - 2) {
-                if (i == getNumCores() - 2) c++;
-                clusters.add(new ClusterImpl(c, curCore.getMinFrequency(), curCore.getMaxFrequency()));
-                c = 0;
+        for (Core core : cores) {
+            if (core.getMinFrequency() == 0) {
+                num++;
+                continue;
             }
+            num++;
+            if (core.getMinFrequency() > prevMin && core.getMaxFrequency() > prevMax) {
+                prevMin = core.getMinFrequency();
+                prevMax = core.getMaxFrequency();
+                clusters.add(new ClusterImpl(num, prevMin, prevMax));
+                num=0;
+            } else {
+                int index = clusters.size() - 1;
+                if (index >= 0)
+                    clusters.get(index).setNumberCores(num+1);
+            }
+
         }
 
         return clusters;
@@ -290,45 +389,25 @@ public class CPUImpl implements CPU {
     private void calculateTemperature() {
         File f = new File("/sys/class/thermal/thermal_zone0/temp");
 
-        ObservableUnit<Double> observable = ObservableCollections.getObservableUnit();
-        cpuTempExecutorService = Executors.newFixedThreadPool(1);
-
-        observable.setOnChangeEventListener(event -> {
-            //    Log.d(DEBUG_TAG, "calculateTemperature: new temperature: ["+ event.getValue() +"°]");
-            tempChangeListener.temperatureChanged(event.getValue());
-        });
+        cpuTempExecutorService = Executors.newSingleThreadExecutor();
 
         if (f.exists()) {
             cpuTempExecutorService.submit(() -> {
-                StringBuilder sb = new StringBuilder();
                 //    String line;
-                char[] buffer = new char[10];
-                int numReads;
                 Double value;
                 while (cpuTempMonitorActive) {
-                    //  try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)))) {
-                    try (FileReader fr = new FileReader(f)) {
-                        sb.delete(0, sb.length());
-
-                        while ((numReads = fr.read(buffer)) != -1) {
-                            sb.append(buffer, 0, numReads);
-                        }
-
-                        value = Double.valueOf(sb.toString().trim());
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)))) {
+                        value = Double.valueOf(br.readLine());
 
                         if (value > 1000)
                             value /= 1000;
 
-                        if (observable.getValue() == null ||
-                                Math.abs(value - observable.getValue()) >= 0.100) {
-                            observable.setValue(value);
-                        }
-
+                        tempChangeListener.temperatureChanged(value);
                         Thread.sleep(500);
-
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(ERROR_TAG, "calculateTemperature: error while calculating temperature inside custom thread");
+                        stopTemperatureMonitor();
                     }
                 }
             });
@@ -461,9 +540,17 @@ public class CPUImpl implements CPU {
                 break;
 
             default:
-                modelName = "ARM Processor";
+                String armVersion;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    armVersion = Build.SUPPORTED_ABIS[0];
+                } else {
+                    armVersion = Build.CPU_ABI;
+                }
+                modelName = armVersion.replace("armeabi-", "");
                 arch = "Unknown";
         }
+
+        modelName = "ARM " + modelName;
 
         processorInfo.setModelName(modelName);
         processorInfo.setVendor(ARM_VENDOR);

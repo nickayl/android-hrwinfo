@@ -30,4 +30,6 @@ public abstract class AndroidHrwInfo {
     public abstract Battery battery(Activity activity);
 
     public abstract SystemInfo systemInfo(Activity activity);
+
+    public abstract Sensors sensors(Activity activity);
 }

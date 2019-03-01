@@ -12,6 +12,7 @@ public interface Battery {
     String getCapacity();
 
     void setOnChangeEventListener(OnChangeEventListener listener);
+    void removeOnChangeEventListener();
 
     interface OnChangeEventListener {
         void onChange(Battery battery);

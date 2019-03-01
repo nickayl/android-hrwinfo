@@ -156,19 +156,21 @@ public class SystemInfoImpl implements SystemInfo {
     }
 
     @Override
-    public int getProcessRunning() {
+    public void getProcessRunning(OnCompleteEventListener<Integer> onCompleteEventListener) {
         if (numProcess == 0) {
+            Executors.newSingleThreadExecutor().submit(() -> {
+                PackageManager pm = activity.getPackageManager();
+                List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-            PackageManager pm = activity.getPackageManager();
-            List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+                for (ApplicationInfo appInfo : apps) {
+                    numProcess += ((appInfo.flags & ApplicationInfo.FLAG_STOPPED) != 0) ? 0 : 1;
+                    System.out.println(pm.getApplicationLabel(appInfo));
+                }
 
-            for (ApplicationInfo appInfo : apps) {
-                numProcess += ((appInfo.flags & ApplicationInfo.FLAG_STOPPED) != 0) ? 0 : 1;
-                System.out.println(pm.getApplicationLabel(appInfo));
-            }
-        }
-
-        return numProcess;
+                onCompleteEventListener.onComplete(numProcess);
+            });
+        } else
+            onCompleteEventListener.onComplete(numProcess);
     }
 
     @Override
@@ -203,10 +205,10 @@ public class SystemInfoImpl implements SystemInfo {
         if (secondsString.length() == 1)
             secondsString = "0" + secondsString;
 
-        String formattedUptime = String.format("%s:%s:%s", hoursString, minutesString, secondsString);
+        String formattedUptime = String.format("%sh:%sm:%ss", hoursString, minutesString, secondsString);
 
         if (!daysString.equals("0"))
-            formattedUptime = daysString + " daysString " + formattedUptime;
+            formattedUptime = daysString + " days " + formattedUptime;
 
         return formattedUptime;
     }

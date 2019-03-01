@@ -26,6 +26,11 @@ public class ClusterImpl implements CPU.Cluster {
     }
 
     @Override
+    public void setNumberCores(int numCores) {
+        this.numberCores = numCores;
+    }
+
+    @Override
     public double getMinFrequency() {
         return minFrequency;
     }

@@ -22,7 +22,7 @@ public interface SystemInfo {
 
      String getSecurityPatchLevel();
 
-     int getProcessRunning();
+     void getProcessRunning(OnCompleteEventListener<Integer> onCompleteEventListener);
 
      int getNumThreads();
 
@@ -36,4 +36,7 @@ public interface SystemInfo {
          void onChange(int days, int hours, int minutes, int seconds);
      }
 
+     interface OnCompleteEventListener<V> {
+          void onComplete(V value);
+     }
 }

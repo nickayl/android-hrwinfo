@@ -1,6 +1,5 @@
 package com.javando.hrwinfo;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.javando.android.hrwinfo.core.api.AndroidHrwInfo;
 import org.javando.android.hrwinfo.core.api.CPU;
 import org.javando.android.hrwinfo.core.impl.CPUImpl;
@@ -13,9 +12,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -60,12 +64,12 @@ public class CPUTests {
             }).startCpuFrequencyMonitor();
 
             int numCores = cpu.getNumCores();
-           // assertEquals(8, numCores);
+            // assertEquals(8, numCores);
         });
 
 
         try {
-            cdl.await(40, TimeUnit.SECONDS);
+            cdl.await(50, TimeUnit.SECONDS);
             //  Thread.sleep(1500);
             cpu.stopCpuFrequencyMonitor();
         } catch (InterruptedException e) {
@@ -77,6 +81,27 @@ public class CPUTests {
 //                        and(lessThan(8))
 //                ));
 
+    }
+
+
+    @Test
+    public void testMinMaxFreq() {
+        AndroidHrwInfo androidHrwInfo = AndroidHrwInfo.getInstance();
+
+        int min = androidHrwInfo.cpu().getMinFrequency();
+        int max = androidHrwInfo.cpu().getMaxFrequency();
+
+        System.out.println("");
+    }
+
+    @Test
+    public void testMeanMinMaxFreq() {
+        AndroidHrwInfo androidHrwInfo = AndroidHrwInfo.getInstance();
+
+        float meanmax = androidHrwInfo.cpu().getAverageMaximumFrequency();
+        float meanmin = androidHrwInfo.cpu().getAverageMinimumFrequency();
+
+        System.out.println("mean "+meanmax+" " +meanmin);
     }
 
     @Test
@@ -102,7 +127,7 @@ public class CPUTests {
         cpu.startTemperatureMonitor();
 
         try {
-            cdl.await(60, TimeUnit.SECONDS);
+            cdl.await(20, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

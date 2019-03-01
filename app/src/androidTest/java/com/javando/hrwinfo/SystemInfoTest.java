@@ -38,10 +38,29 @@ public class SystemInfoTest {
 
     @Test
     public void numProcessesTest() {
-        int num = sysInfo.getProcessRunning();
-        assertNotEquals(0, num);
-        assertThat(num, is(greaterThan(1)));
-        Log.d(TAG, "Num processes: " + num);
+        final int[] num = {0};
+
+        sysInfo.getProcessRunning(value -> {
+            num[0] = value;
+        });
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        assertNotEquals(0, num[0]);
+        assertThat(num[0], is(greaterThan(1)));
+
+        Log.d(TAG, "Num processes: " + num[0]);
+    }
+
+    @Test
+    public void getNumThreadsTest() {
+        int num = sysInfo.getNumThreads();
+        System.out.println(num);
     }
 
     @Test
@@ -64,12 +83,6 @@ public class SystemInfoTest {
         }
 
         Log.d(TAG, "testSystemInfo: timeout!");
-    }
-
-    @Test
-    public void getNumThreadsTest() {
-        int num = sysInfo.getNumThreads();
-        System.out.println(num);
     }
 
 }

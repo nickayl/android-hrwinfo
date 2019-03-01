@@ -4,6 +4,7 @@ package org.javando.android.hrwinfo.core.impl;
 import android.app.Activity;
 import android.content.Context;
 import org.javando.android.hrwinfo.core.api.*;
+import org.javando.android.hrwinfo.core.impl.sensor.SensorsImpl;
 
 public class AndroidHrwInfoImpl extends AndroidHrwInfo {
 
@@ -12,6 +13,7 @@ public class AndroidHrwInfoImpl extends AndroidHrwInfo {
     private Device device;
     private CPU cpu;
     private Battery battery;
+    private Sensors sensors;
 
     @Override
     public CPU cpu() {
@@ -51,6 +53,14 @@ public class AndroidHrwInfoImpl extends AndroidHrwInfo {
             systemInfo = new SystemInfoImpl(activity);
 
         return systemInfo;
+    }
+
+    @Override
+    public Sensors sensors(Activity activity) {
+        if(sensors == null)
+            sensors = new SensorsImpl(activity);
+
+        return sensors;
     }
 
 }

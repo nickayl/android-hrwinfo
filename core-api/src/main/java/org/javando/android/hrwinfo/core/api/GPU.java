@@ -1,7 +1,5 @@
 package org.javando.android.hrwinfo.core.api;
 
-import com.javando.collections.api.ObservableUnit;
-
 public interface GPU {
 
     String getVendor();
@@ -10,7 +8,6 @@ public interface GPU {
 
     String getRenderer();
 
-    ObservableUnit<Double> getFrequency();
 
     String getOpenGLVersion();
 

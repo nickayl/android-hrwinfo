@@ -1,7 +1,5 @@
 package org.javando.android.hrwinfo.core.api;
 
-import com.javando.collections.api.ObservableUnit;
-
 public interface Device {
 
     String getCommercialName();
@@ -14,14 +12,26 @@ public interface Device {
 
     int getTotalRam();
 
-    ObservableUnit<Integer> getAvailableRam();
+    float getAvailableRamPercent();
+    float getAvailableStoragePercent();
+
+    int getAvailableRam();
 
     int getTotalStorage();
 
-    ObservableUnit<Double> getAvailableStorage();
-
+    int getAvailableStorage();
 
     String getScreenResolution();
     String getScreenDensityDpi();
     String getScreenSize();
+
+    void setOnAvailableRamChangeListener(OnValueChangeListener listener);
+    void setOnAvailableStorageChangeListener(OnValueChangeListener listener);
+
+    void disableAvailableRamListener();
+    void disableAvailableStorageListener();
+
+    interface OnValueChangeListener {
+        void onChange(Device device);
+    }
 }

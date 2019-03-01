@@ -8,6 +8,12 @@ public interface CPU {
 
     List<Core> getCores();
 
+    int getMaxFrequency();
+    int getMinFrequency();
+
+    float getAverageMaximumFrequency();
+    float getAverageMinimumFrequency();
+
     List<Cluster> getClusters();
 
     ProcessorInfo getProcessorInfo();
@@ -46,6 +52,7 @@ public interface CPU {
 
     interface Cluster {
         int getNumberCores();
+        void setNumberCores(int numCores);
         double getMinFrequency();
         double getMaxFrequency();
     }
@@ -67,27 +74,27 @@ public interface CPU {
         public static final String INTEL_VENDOR = "Intel Corporation";
 
         // ====== ARM Model names ==== //
-        public static final String CORTEX_A_53_PROCESSOR = "Cortex A-53 Processor";
-        public static final String CORTEX_M_7_PROCESSOR = "Cortex-M7 Processor";
-        public static final String CORTEX_M_4_PROCESSOR = "Cortex-M4 Processor";
-        public static final String CORTEX_M_3_PROCESSOR =  "Cortex-M3 Processor";
-        public static final String CORTEX_M_33_PROCESSOR =  "Cortex-M33 Processor";
-        public static final String CORTEX_M_23_PROOCESSOR = "Cortex-M23 Proocessor";
-        public static final String CORTEX_M_1_PROCESSOR =  "Cortex-M1 Processor";
-        public static final String CORTEX_M_0_PROCESSOR =  "Cortex-M0 Processor";
-        public static final String CORTEX_A_76_PROCESSOR = "Cortex-A76 Processor";
-        public static final String CORTEX_A_75_PROCESSOR = "Cortex-A5 Processor";
-        public static final String CORTEX_A_73_PROCESSOR = "Cortex-A73 Processor";
-        public static final String CORTEX_A_72_PROCESSOR = "Cortex-A72 Processor";
-        public static final String CORTEX_A_57_PROCESSOR = "Cortex-A57 Processor";
-        public static final String CORTEX_A_55_PROCESSOR = "Cortex-A55 Processor";
-        public static final String CORTEX_A_35_PROCESSOR = "Cortex-A35 Processor";
-        public static final String CORTEX_A_32_PROCESSOR = "Cortex-A32 Processor";
-        public static final String CORTEX_A_15_PROCESSOR = "Cortex-A15 Processor";
-        public static final String CORTEX_A_9_PROCESSOR =  "Cortex-A9 Processor";
-        public static final String CORTEX_A_8_PROCESSOR =  "Cortex-A8 Processor";
+        public static final String CORTEX_A_53_PROCESSOR = "Cortex A-53";
+        public static final String CORTEX_M_7_PROCESSOR = "Cortex-M7";
+        public static final String CORTEX_M_4_PROCESSOR = "Cortex-M4";
+        public static final String CORTEX_M_3_PROCESSOR =  "Cortex-M3";
+        public static final String CORTEX_M_33_PROCESSOR =  "Cortex-M33";
+        public static final String CORTEX_M_23_PROOCESSOR = "Cortex-M23";
+        public static final String CORTEX_M_1_PROCESSOR =  "Cortex-M1";
+        public static final String CORTEX_M_0_PROCESSOR =  "Cortex-M0";
+        public static final String CORTEX_A_76_PROCESSOR = "Cortex-A76";
+        public static final String CORTEX_A_75_PROCESSOR = "Cortex-A5";
+        public static final String CORTEX_A_73_PROCESSOR = "Cortex-A73";
+        public static final String CORTEX_A_72_PROCESSOR = "Cortex-A72";
+        public static final String CORTEX_A_57_PROCESSOR = "Cortex-A57";
+        public static final String CORTEX_A_55_PROCESSOR = "Cortex-A55";
+        public static final String CORTEX_A_35_PROCESSOR = "Cortex-A35";
+        public static final String CORTEX_A_32_PROCESSOR = "Cortex-A32";
+        public static final String CORTEX_A_15_PROCESSOR = "Cortex-A15";
+        public static final String CORTEX_A_9_PROCESSOR =  "Cortex-A9";
+        public static final String CORTEX_A_8_PROCESSOR =  "Cortex-A8";
         public static final String CORTEX_A_7_MPCORE =     "Cortex-A7 MPCore";
-        public static final String CORTEX_A_5_PROCESSOR =  "Cortex-A5 Processor";
+        public static final String CORTEX_A_5_PROCESSOR =  "Cortex-A5";
 
         // ==== Architecture types ======== //
         public static final String ARCH_X86_64 = "X86_64";

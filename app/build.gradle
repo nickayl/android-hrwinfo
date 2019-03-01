@@ -25,35 +25,32 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:27.1.1'
-
     testImplementation 'junit:junit:4.12'
-
     // Core library
     androidTestImplementation 'androidx.test:core:1.0.0'
-
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.1.0'
-
     // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.0.0'
     androidTestImplementation 'androidx.test.ext:truth:1.0.0'
     androidTestImplementation 'com.google.truth:truth:0.42'
-
     // Espresso dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    //    implementation 'com.javando.collections:core-api:1.0.1.RC'
+    //    implementation 'com.javando.collections:core-reference-impl:1.0.1.RC'
 
-//    implementation 'com.javando.collections:core-api:1.0.1.RC'
-//    implementation 'com.javando.collections:core-reference-impl:1.0.1.RC'
-    implementation 'com.github.cyclonesword:observable-collections:1.0.RC'
+
+
+
+    //implementation 'com.github.cyclonesword:observable-collections:1.0.RC'
+
 
     // Template : implementation 'com.github.User:Repo:Tag'
-
 
     implementation project(path: ':core-reference-impl')
     implementation project(path: ':core-api')
