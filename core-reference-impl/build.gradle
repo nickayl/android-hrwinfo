@@ -42,7 +42,7 @@ dependencies {
     androidTestImplementation 'com.google.truth:truth:0.42'
     // Espresso dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+
     implementation project(':core-api')
-    testImplementation project(':core-reference-impl')
     //  implementation 'com.github.cyclonesword:observable-collections:1.0.RC'
 }
