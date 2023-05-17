@@ -32,7 +32,7 @@ allprojects {
 
 Then, add the dependency to your project-local build.gradle :
 ``` groovy
-implementation 'com.github.cyclonesword:android-hrwinfo:0.8.2-BETA'
+implementation 'com.github.cyclonesword:android-hrwinfo:1.0.1.RC'
 ```
 
 #### Maven
@@ -53,7 +53,7 @@ Then, add the dependency to your pom.xml :
 <dependency>
     <groupId>com.github.cyclonesword</groupId>
     <artifactId>android-hrwinfo</artifactId>
-    <version>0.8.2-BETA</version>
+    <version>1.0.1.RC</version>
 </dependency>
 ```
 
